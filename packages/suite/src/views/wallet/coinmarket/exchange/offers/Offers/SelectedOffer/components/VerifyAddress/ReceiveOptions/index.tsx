@@ -54,14 +54,13 @@ const AccountType = styled.span`
     padding-left: 5px;
 `;
 
-type AccountSelectOption = {
+export type AccountSelectOption = {
     type: 'SUITE' | 'ADD_SUITE' | 'NON_SUITE';
     account?: Account;
 };
 
 type FormState = {
     address?: string;
-    extraField?: string;
 };
 
 type Props = Pick<UseFormMethods<FormState>, 'setValue'> & {

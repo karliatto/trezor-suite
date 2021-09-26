@@ -1,15 +1,15 @@
 import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
-import ReceiveOptions from './ReceiveOptions';
+import ReceiveOptions, { AccountSelectOption } from './ReceiveOptions';
 import { QuestionTooltip, Translation } from '@suite-components';
 import { Input, variables, DeviceImage, Button } from '@trezor/components';
 import { InputError } from '@wallet-components';
 import { useCoinmarketExchangeOffersContext } from '@wallet-hooks/useCoinmarketExchangeOffers';
-import { Account } from '@wallet-types';
 import { useForm } from 'react-hook-form';
 import { TypedValidationRules } from '@wallet-types/form';
 import addressValidator from 'trezor-address-validator';
 import { isHexValid, isInteger } from '@wallet-utils/validation';
+import AddressOptions from './AddressOptions';
 
 const Wrapper = styled.div`
     display: flex;
@@ -71,11 +71,6 @@ const Row = styled.div`
     margin: 12px 0;
 `;
 
-type AccountSelectOption = {
-    type: 'SUITE' | 'ADD_SUITE' | 'NON_SUITE';
-    account?: Account;
-};
-
 type FormState = {
     address?: string;
     extraField?: string;
@@ -98,6 +93,7 @@ const VerifyAddressComponent = () => {
     const {
         callInProgress,
         device,
+        account,
         verifyAddress,
         confirmTrade,
         selectedQuote,
@@ -115,6 +111,8 @@ const VerifyAddressComponent = () => {
     );
 
     const { address, extraField } = watch();
+
+    console.log('selectedAccountOption', selectedAccountOption?.account?.addresses, address);
 
     const extraFieldDescription = selectedQuote?.extraFieldDescription
         ? {
@@ -153,6 +151,21 @@ const VerifyAddressComponent = () => {
                     />
                 </Row>
                 <Row>
+                    {account.networkType === 'bitcoin' && (
+                        <>
+                            <CustomLabel>
+                                <StyledQuestionTooltip
+                                    label="TR_EXCHANGE_RECEIVING_ADDRESS"
+                                    tooltip={addressTooltipTranslationId}
+                                />
+                            </CustomLabel>
+                            <AddressOptions
+                                addresses={selectedAccountOption?.account?.addresses}
+                                selectedAddress={address}
+                                setValue={setValue}
+                            />
+                        </>
+                    )}
                     <Input
                         label={
                             <Label>
@@ -177,6 +190,7 @@ const VerifyAddressComponent = () => {
                         readOnly={selectedAccountOption?.type !== 'NON_SUITE'}
                         state={errors.address ? 'error' : undefined}
                         bottomText={<InputError error={errors.address} />}
+                        // hidden={account.networkType === 'bitcoin'}
                     />
 
                     {addressVerified && addressVerified === address && (
