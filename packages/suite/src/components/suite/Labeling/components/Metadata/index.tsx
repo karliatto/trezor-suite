@@ -35,6 +35,7 @@ const Label = styled.div`
     display: flex;
     overflow: hidden;
     padding-left: 1px;
+    position: relative;
 `;
 
 const LabelButton = styled(Button)`
@@ -83,8 +84,16 @@ const LabelContainer = styled.div`
     }
 `;
 
+const RelativeButton = styled(Button)`
+    position: relative;
+`;
+
+const RelativeLabel = styled(Label)`
+    position: relative;
+`;
+
 const ButtonLikeLabel = (props: ExtendedProps) => {
-    const EditableButton = useMemo(() => withEditable(Button), []);
+    const EditableButton = useMemo(() => withEditable(RelativeButton), []);
 
     if (props.editActive) {
         return (
@@ -97,6 +106,7 @@ const ButtonLikeLabel = (props: ExtendedProps) => {
                 onSubmit={props.onSubmit}
                 onBlur={props.onBlur}
                 defaultVisibleValue={props.defaultVisibleValue}
+                isButton
             />
         );
     }
@@ -118,7 +128,7 @@ const ButtonLikeLabel = (props: ExtendedProps) => {
 };
 
 const TextLikeLabel = (props: ExtendedProps) => {
-    const EditableLabel = useMemo(() => withEditable(Label), []);
+    const EditableLabel = useMemo(() => withEditable(RelativeLabel), []);
 
     if (props.editActive) {
         return (
