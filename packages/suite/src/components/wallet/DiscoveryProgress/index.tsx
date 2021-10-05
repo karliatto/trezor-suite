@@ -1,8 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useDiscovery } from '@suite-hooks';
-import { isDesktop } from '@suite-utils/env';
-import { DESKTOP_TITLEBAR_HEIGHT } from '@suite-constants/layout';
+import { isDesktop, isMacOs } from '@suite-utils/env';
+import {
+    DESKTOP_TITLEBAR_HEIGHT_MACOS,
+    DESKTOP_TITLEBAR_HEIGHT_WINDOWS,
+} from '@suite-constants/layout';
+
+const DESKTOP_TITLEBAR_HEIGHT = isMacOs()
+    ? DESKTOP_TITLEBAR_HEIGHT_MACOS
+    : DESKTOP_TITLEBAR_HEIGHT_WINDOWS;
 
 const TOP_OFFSET = isDesktop() ? DESKTOP_TITLEBAR_HEIGHT : '0px';
 

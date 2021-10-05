@@ -1,6 +1,13 @@
 import { colors } from '@trezor/components';
-import { isDesktop } from '@suite-utils/env';
-import { DESKTOP_TITLEBAR_HEIGHT } from '@suite-constants/layout';
+import { isDesktop, isMacOs } from '@suite-utils/env';
+import {
+    DESKTOP_TITLEBAR_HEIGHT_MACOS,
+    DESKTOP_TITLEBAR_HEIGHT_WINDOWS,
+} from '@suite-constants/layout';
+
+const DESKTOP_TITLEBAR_HEIGHT = isMacOs()
+    ? DESKTOP_TITLEBAR_HEIGHT_MACOS
+    : DESKTOP_TITLEBAR_HEIGHT_WINDOWS;
 
 const OFFSET_TOP = isDesktop() ? `calc(${DESKTOP_TITLEBAR_HEIGHT} + 1em)` : '1em';
 export const notifications = `

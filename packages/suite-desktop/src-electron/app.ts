@@ -62,9 +62,15 @@ const init = async () => {
         title: APP_NAME,
         width: winBounds.width,
         height: winBounds.height,
-        frame: false,
+        frame: process.platform === 'linux',
+        titleBarStyle: 'hidden',
+        titleBarOverlay: {
+            color: '#404040',
+            symbolColor: '#00000000',
+        },
         minWidth: MIN_WIDTH,
         minHeight: MIN_HEIGHT,
+        fullscreenable: process.platform !== 'win32',
         webPreferences: {
             webSecurity: !isDev,
             nativeWindowOpen: true,
