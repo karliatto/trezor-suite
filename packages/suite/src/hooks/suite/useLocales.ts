@@ -16,9 +16,9 @@ export const useLocales = () => {
 
             let dateLocale;
             try {
-                dateLocale = await import(`date-fns/locale/${lang}/index.js`);
+                dateLocale = await import(`date-fns/locale/${lang}/index`);
             } catch (error) {
-                dateLocale = await import(`date-fns/locale/en-US/index.js`);
+                dateLocale = await import(`date-fns/locale/en-US/index`);
 
                 console.error(
                     `date-fns language: ${language} is not available. Using en-US fallback.`,
