@@ -37,7 +37,7 @@ export interface DiscoveryItem {
     networkType: Account['networkType'];
 }
 
-type ProgressEvent = BundleProgress<AccountInfo>['payload'];
+type ProgressEvent = BundleProgress<AccountInfo | null>['payload'];
 
 const LIMIT = 10;
 
@@ -126,13 +126,13 @@ const handleProgress =
         // process event
         const { response, error } = event;
         let { failed } = discovery;
-        if (error) {
+        if (error || !response) {
             failed = failed.concat([
                 {
                     index: item.index,
                     symbol: item.coin,
                     accountType: item.accountType,
-                    error,
+                    error: error || '',
                 },
             ]);
         } else {
@@ -397,7 +397,7 @@ export const start =
                 metadataEnabled &&
                 authConfirm &&
                 currentDiscovery.authConfirm &&
-                result.payload.find(a => !a.empty)
+                result.payload.find(a => !a?.empty)
             ) {
                 dispatch(
                     update({
