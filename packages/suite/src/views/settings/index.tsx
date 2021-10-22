@@ -86,6 +86,7 @@ const Settings = () => {
         disconnectProvider,
         setOnionLinks,
         setUpdateWindow,
+        openEarlyAccessSetup,
     } = useActions({
         setLocalCurrency: walletSettingsActions.setLocalCurrency,
         removeDatabase: storageActions.removeDatabase,
@@ -95,6 +96,7 @@ const Settings = () => {
         disconnectProvider: metadataActions.disconnectProvider,
         setOnionLinks: suiteActions.setOnionLinks,
         setUpdateWindow: desktopUpdateActions.setUpdateWindow,
+        openEarlyAccessSetup: desktopUpdateActions.openEarlyAccessSetup,
     });
 
     // Tor
@@ -436,6 +438,31 @@ const Settings = () => {
                     )}
                 </SectionItem>
             </Section>
+            {desktopUpdate.enabled && (
+                <Section title={<Translation id="TR_EXPERIMENTAL_FEATURES" />}>
+                    <SectionItem data-test="@settings/experimenta-features">
+                        <TextColumn
+                            title={<Translation id="TR_EARLY_ACCESS" />}
+                            description={
+                                <Version>
+                                    <Translation id="TR_EARLY_ACCESS_DESCRIPTION" />
+                                </Version>
+                            }
+                        />
+                        <ActionColumn>
+                            <ActionButton onClick={openEarlyAccessSetup} variant="secondary">
+                                <Translation
+                                    id={
+                                        desktopUpdate.allowPrerelease
+                                            ? 'TR_EARLY_ACCESS_DISABLE'
+                                            : 'TR_EARLY_ACCESS_ENABLE'
+                                    }
+                                />
+                            </ActionButton>
+                        </ActionColumn>
+                    </SectionItem>
+                </Section>
+            )}
         </SettingsLayout>
     );
 };

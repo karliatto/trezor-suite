@@ -10,6 +10,7 @@ import { UpdateInfo, UpdateProgress, UpdateWindow } from '@suite-types/desktop';
  * - not-available: Currently on the latest version
  * - downloading: Currently downloading the latest version
  * - ready: Latest version is downloaded and going to be installed on the next restart
+ * - earlyAccess: User is setting up Early Access
  * skip: String with the skipped version
  * progress: Information about download progress (size, speed, ...)
  * latest: Information about latest version (if you're on the latest version, this will contain the current version)
@@ -20,17 +21,25 @@ import { UpdateInfo, UpdateProgress, UpdateWindow } from '@suite-types/desktop';
  */
 export interface State {
     enabled: boolean;
-    state: 'checking' | 'available' | 'not-available' | 'downloading' | 'ready';
+    state:
+        | 'checking'
+        | 'available'
+        | 'not-available'
+        | 'downloading'
+        | 'ready'
+        | 'earlyAccessSetup';
     skip?: string;
     progress?: Partial<UpdateProgress>;
     latest?: UpdateInfo;
     window: UpdateWindow;
+    allowPrerelease: boolean;
 }
 
 const initialState: State = {
     enabled: false,
     state: 'not-available',
     window: 'maximized',
+    allowPrerelease: false,
 };
 
 const desktopUpdateReducer = (state: State = initialState, action: Action): State =>
@@ -67,6 +76,14 @@ const desktopUpdateReducer = (state: State = initialState, action: Action): Stat
                 break;
             case DESKTOP_UPDATE.WINDOW:
                 draft.window = action.payload;
+                break;
+            case DESKTOP_UPDATE.OPEN_EARLY_ACCESS_SETUP:
+                draft.state = 'earlyAccessSetup';
+                draft.window = 'maximized';
+                delete draft.skip;
+                break;
+            case DESKTOP_UPDATE.ALLOW_PRERELEASE:
+                draft.allowPrerelease = action.payload;
                 break;
             // no default
         }

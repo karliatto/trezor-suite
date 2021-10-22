@@ -4666,11 +4666,32 @@ export default defineMessages({
     TR_FIRMWARE_REINSTALL_FW_DESCRIPTION: {
         id: 'TR_FIRMWARE_REINSTALL_FW_DESCRIPTION',
         defaultMessage:
-            'Your device is already updated to latest firmware. You may reinstall the firmware if needed.',
+         'Your device is already updated to latest firmware. You may reinstall the firmware if needed.',
+    },
+    TR_EXPERIMENTAL_FEATURES: {
+        id: 'TR_EXPERIMENTAL_FEATURES',
+        defaultMessage: 'Experimental features',
+    },
+    TR_EARLY_ACCESS: {
+        id: 'TR_EARLY_ACCESS',
+        defaultMessage: 'Early access program',
+    },
+    TR_EARLY_ACCESS_DESCRIPTION: {
+        id: 'TR_EARLY_ACCESS_DESCRIPTION',
+        defaultMessage: 'Enable to get cool features earlier.',
+    },
+    TR_EARLY_ACCESS_ENABLE: {
+        id: 'TR_EARLY_ACCESS_ENABLE',
+        defaultMessage: 'Enable',
+    },
+    TR_EARLY_ACCESS_DISABLE: {
+        id: 'TR_EARLY_ACCESS_DISABLE',
+        defaultMessage: 'Disable',
     },
     TR_EXPORT_TO_FILE: {
         id: 'TR_EXPORT_TO_FILE',
         defaultMessage: 'Export to file',
+        description: 'Section title for Early Access program so far',
     },
     LOG_INCLUDE_BALANCE_TITLE: {
         id: 'LOG_INCLUDE_BALANCE_TITLE',

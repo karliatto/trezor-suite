@@ -83,6 +83,7 @@ declare type UpdateSettings = {
      * Use `app.getVersion()` to get the current version of the app.
      */
     savedCurrentVersion?: string;
+    allowPrerelease: boolean;
 };
 
 declare type TorSettings = {

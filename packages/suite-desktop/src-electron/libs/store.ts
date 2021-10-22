@@ -19,7 +19,7 @@ export const setWinBounds = (winBounds: WinBounds): void => {
 };
 
 export const getUpdateSettings = (): UpdateSettings =>
-    store.get('updateSettings', { skipVersion: '' }) as UpdateSettings;
+    store.get('updateSettings', { skipVersion: '', allowPrerelease: false }) as UpdateSettings;
 
 export const setUpdateSettings = (updateSettings: UpdateSettings): void => {
     store.set('updateSettings', updateSettings);

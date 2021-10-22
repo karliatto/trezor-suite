@@ -22,6 +22,7 @@ const validChannels = [
     'update/downloaded',
     'update/skip',
     'update/new-version-first-run',
+    'update/allow-prerelease',
 
     // invity
     'buy-receiver',
@@ -71,6 +72,7 @@ contextBridge.exposeInMainWorld('desktopApi', {
     installUpdate: () => ipcRenderer.send('update/install'),
     cancelUpdate: () => ipcRenderer.send('update/cancel'),
     skipUpdate: (version: string) => ipcRenderer.send('update/skip', version),
+    allowPrerelease: (value?: boolean) => ipcRenderer.send('update/allow-prerelease', value),
 
     // Window controls
     windowClose: () => ipcRenderer.send('window/close'),

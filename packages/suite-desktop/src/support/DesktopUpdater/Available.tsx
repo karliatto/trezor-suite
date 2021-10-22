@@ -78,6 +78,7 @@ type ReleaseState = {
     loading: boolean;
     version?: string;
     notes?: string;
+    prerelease: boolean;
 };
 
 interface Props {
@@ -90,6 +91,7 @@ const Available = ({ hideWindow, latest }: Props) => {
         loading: false,
         version: undefined,
         notes: undefined,
+        prerelease: false,
     });
 
     useEffect(() => {
@@ -100,6 +102,7 @@ const Available = ({ hideWindow, latest }: Props) => {
             });
 
             let notes;
+            let prerelease = false;
             const version = latest?.version;
 
             try {
@@ -109,11 +112,13 @@ const Available = ({ hideWindow, latest }: Props) => {
 
                 const release = await getReleaseNotes(version);
                 notes = release?.body;
+                prerelease = !!release?.prerelease;
             } finally {
                 setReleaseNotes({
                     loading: false,
                     version,
                     notes,
+                    prerelease,
                 });
             }
         };
@@ -137,7 +142,11 @@ const Available = ({ hideWindow, latest }: Props) => {
             <GreenH2>
                 <Translation
                     id="TR_VERSION_HAS_BEEN_RELEASED"
-                    values={{ version: latest?.version }}
+                    values={{
+                        version: `${latest?.version}${
+                            releaseNotes?.prerelease ? 'PRERELEASE' : '' /* TODO */
+                        }`,
+                    }}
                 />
             </GreenH2>
 

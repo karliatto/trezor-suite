@@ -78,7 +78,10 @@ const init = ({ mainWindow, store }: Dependencies) => {
     // of electron-updater only until update-downloaded event is emitted.
     autoUpdater.autoInstallOnAppQuit = false;
 
-    autoUpdater.allowPrerelease = preReleaseFlag;
+    autoUpdater.allowPrerelease = preReleaseFlag || updateSettings.allowPrerelease;
+    mainWindow.webContents.send('update/allow-prerelease', autoUpdater.allowPrerelease);
+    // TODO autoUpdater.allowDowngrade
+
     autoUpdater.logger = null;
 
     const quitAndInstall = () => {
@@ -90,7 +93,10 @@ const init = ({ mainWindow, store }: Dependencies) => {
         autoUpdater.quitAndInstall();
     };
 
-    logger.info('auto-updater', `Is looking for pre-releases? (${b2t(preReleaseFlag)})`);
+    logger.info(
+        'auto-updater',
+        `Is looking for pre-releases? (${b2t(autoUpdater.allowPrerelease)})`,
+    );
 
     if (updateSettings.skipVersion) {
         logger.debug('auto-updater', `Set to skip version ${updateSettings.skipVersion}`);
@@ -259,6 +265,18 @@ const init = ({ mainWindow, store }: Dependencies) => {
         logger.info('auto-updater', `Skip version (${version}) request`);
         mainWindow.webContents.send('update/skip', version);
         setSkipVersion(version);
+    });
+
+    ipcMain.on('update/allow-prerelease', (_, value = true) => {
+        logger.info('auto-updater', `${value ? 'allow' : 'disable'} prerelease!`);
+        mainWindow.webContents.send('update/allow-prerelease', value);
+        updateSettings.allowPrerelease = value;
+        store.setUpdateSettings(updateSettings);
+
+        autoUpdater.allowPrerelease = value;
+        autoUpdater.allowDowngrade = value;
+
+        autoUpdater.checkForUpdates();
     });
 
     app.on('before-quit', () => {
