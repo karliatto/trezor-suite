@@ -65,8 +65,8 @@ export const THEME = {
         BG_GREEN: '#00854D',
         BG_GREEN_HOVER: '#007837', // improvisation
         BG_LIGHT_GREEN: '#1a2516',
-        BG_SECONDARY: '#3a3b3c', // special color for secondary button bg, in dark mode it is same as tertiary
-        BG_SECONDARY_HOVER: '#373839', // special color for secondary button bg, in dark mode it is same as tertiary
+        BG_SECONDARY: '#1A2516', // special color for secondary button bg, in dark mode it is same as tertiary
+        BG_SECONDARY_HOVER: '#172114', // special color for secondary button bg, in dark mode it is same as tertiary
         BG_LIGHT_GREEN_HOVER: '#131d10', // improvisation
         BG_GREY: '#18191a',
         BG_GREY_OPEN: '#141414', // used for main menu active state
@@ -124,8 +124,8 @@ export const THEME = {
         BG_GREEN_HOVER: '#007837', // improvisation
         BG_LIGHT_GREEN: '#1a2516',
         BG_LIGHT_GREEN_HOVER: '#131d10', // improvisation
-        BG_SECONDARY: '#3a3b3c', // TODO
-        BG_SECONDARY_HOVER: '#373839', // TODO
+        BG_SECONDARY: '#1A2516', // TODO
+        BG_SECONDARY_HOVER: '#172114', // TODO
         BG_GREY: '#000000',
         BG_GREY_OPEN: '#141414', // TODO
         BG_GREY_ALT: '#262626', // used for selected account item, account search input, tertiary buttons

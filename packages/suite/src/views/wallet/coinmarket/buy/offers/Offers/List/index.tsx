@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { CoinLogo, variables, Icon } from '@trezor/components';
+import { CoinLogo, variables, Icon, H2 } from '@trezor/components';
 import { BuyTrade } from 'invity-api';
 import { useCoinmarketBuyOffersContext } from '@wallet-hooks/useCoinmarketBuyOffers';
 import Quote from './Quote';
@@ -36,8 +36,6 @@ const Right = styled.div`
 const SummaryRow = styled.div`
     display: flex;
     align-items: center;
-    font-size: ${variables.FONT_SIZE.H2};
-    text-transform: uppercase;
 `;
 
 const OrigAmount = styled.div`
@@ -47,9 +45,10 @@ const OrigAmount = styled.div`
 
 const StyledIcon = styled(Icon)`
     padding: 0 10px;
+    margin: 0 20px;
 `;
 
-const Text = styled.div`
+const Text = styled(H2)`
     display: flex;
     padding-top: 3px;
     align-items: center;
@@ -88,18 +87,18 @@ const List = ({ isAlternative, quotes }: Props) => {
                     {isAlternative ? (
                         <>
                             <SummaryRow>
-                                <Text>
+                                <Text fontWeight={400}>
                                     {wantCrypto ? '' : `${quotes[0].fiatStringAmount} `}
                                     {quotes[0].fiatCurrency}
                                 </Text>
-                                <StyledIcon icon="ARROW_RIGHT" />
+                                <StyledIcon icon="ARROW_RIGHT_LONG" />
                                 {wantCrypto && (
-                                    <Receive>
+                                    <Receive fontWeight={400}>
                                         {formatCryptoAmount(Number(quotes[0].receiveStringAmount))}
                                     </Receive>
                                 )}
                                 <StyledCoinLogo size={21} symbol={account.symbol} />
-                                <Crypto>{quotes[0].receiveCurrency}</Crypto>
+                                <Crypto fontWeight={400}>{quotes[0].receiveCurrency}</Crypto>
                             </SummaryRow>
                             {!wantCrypto && (
                                 <OrigAmount>
@@ -109,16 +108,18 @@ const List = ({ isAlternative, quotes }: Props) => {
                         </>
                     ) : (
                         <SummaryRow>
-                            <Text>
+                            <Text fontWeight={400}>
                                 {wantCrypto ? '' : `${fiatStringAmount} `}
                                 {fiatCurrency}
                             </Text>
-                            <StyledIcon icon="ARROW_RIGHT" />
+                            <StyledIcon icon="ARROW_RIGHT_LONG" />
                             {wantCrypto && (
-                                <Receive>{formatCryptoAmount(Number(cryptoStringAmount))}</Receive>
+                                <Receive fontWeight={400}>
+                                    {formatCryptoAmount(Number(cryptoStringAmount))}
+                                </Receive>
                             )}
                             <StyledCoinLogo size={21} symbol={account.symbol} />
-                            <Crypto>{receiveCurrency}</Crypto>
+                            <Crypto fontWeight={400}>{receiveCurrency}</Crypto>
                         </SummaryRow>
                     )}
                 </Left>
