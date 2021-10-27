@@ -1,0 +1,13 @@
+diff --git a/node_modules/trezor-connect/lib/core/methods/tx/outputs.js b/node_modules/trezor-connect/lib/core/methods/tx/outputs.js
+index 839db46..2e6a7f9 100644
+--- a/node_modules/trezor-connect/lib/core/methods/tx/outputs.js
++++ b/node_modules/trezor-connect/lib/core/methods/tx/outputs.js
+@@ -132,7 +132,7 @@ exports.validateHDOutput = validateHDOutput;
+ 
+ var outputToTrezor = function outputToTrezor(output, _coinInfo) {
+   if (output.opReturnData) {
+-    if (Object.prototype.hasOwnProperty.call(output, 'value')) {
++    if (output.value) {
+       throw _constants.ERRORS.TypedError('Method_InvalidParameter', 'opReturn output should not contains value');
+     }
+ 
