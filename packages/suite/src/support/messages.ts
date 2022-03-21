@@ -4492,7 +4492,7 @@ export default defineMessages({
         defaultMessage: 'Accounts are still loading. Please wait before adding a new one.',
     },
     RECIPIENT_ADDRESS: {
-        defaultMessage: 'Address',
+        defaultMessage: 'Address | LN Invoice',
         id: 'RECIPIENT_ADDRESS',
     },
     RECIPIENT_SCAN: {
