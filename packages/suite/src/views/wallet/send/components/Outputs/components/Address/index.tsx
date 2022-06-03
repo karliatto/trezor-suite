@@ -127,11 +127,13 @@ export const Address = ({ output, outputId, outputsCount, setBolt11PayRequest }:
         let bolt11Decode;
         try {
             bolt11Decode = decodePaymentRequest(value);
+            console.log('bolt11Decode', bolt11Decode);
         } catch (e) {
             // Ignore it.
         }
         if (networkType === 'bitcoin' && bolt11Decode) {
-            setBolt11PayRequest(bolt11Decode);
+            // setBolt11PayRequest(bolt11Decode);
+            console.log('it is a bolt11 invoice');
         } else if (!isAddressValid(value, symbol)) {
             const addressDeprecatedUrl = isAddressDeprecated(value, symbol);
             if (addressDeprecatedUrl) {

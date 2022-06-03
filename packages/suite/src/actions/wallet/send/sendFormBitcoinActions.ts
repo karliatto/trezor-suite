@@ -19,9 +19,12 @@ import { Dispatch, GetState } from '@suite-types';
 
 export const composeTransaction =
     (formValues: FormState, formState: UseSendFormState) => async (dispatch: Dispatch) => {
+        console.log('composeTransaction');
+        console.log('formValues', formValues);
         const { account, feeInfo } = formState;
         if (!account.addresses || !account.utxo) return;
 
+        // TODO(karliatto): the outputs are compsed here
         const composeOutputs = getBitcoinComposeOutputs(formValues, account.symbol);
         if (composeOutputs.length < 1) return;
 
@@ -76,6 +79,8 @@ export const composeTransaction =
             ...params,
             account: params.account, // needs to be present in order to correct resolve of @trezor/connect params overload
         });
+
+        console.log('response from TrezorConnect.composeTransaction ', response);
 
         if (!response.success) {
             dispatch(
@@ -230,8 +235,9 @@ export const signTransaction =
             coin: account.symbol,
             ...signEnhancement,
         };
-
+        console.log('signPayload', signPayload);
         const signedTx = await TrezorConnect.signTransaction(signPayload);
+        console.log('signedTx', signedTx);
 
         if (!signedTx.success) {
             // catch manual error from ReviewTransaction modal

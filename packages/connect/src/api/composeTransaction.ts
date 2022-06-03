@@ -47,9 +47,11 @@ export default class ComposeTransaction extends AbstractMethod<'composeTransacti
     discovery?: Discovery;
 
     init() {
+        console.log('ComposeTransaction connect init !!!!');
         this.requiredPermissions = ['read', 'write'];
 
         const { payload } = this;
+        console.log('payload', payload);
         // validate incoming parameters
         validateParams(payload, [
             { name: 'outputs', type: 'array', required: true },
@@ -64,6 +66,7 @@ export default class ComposeTransaction extends AbstractMethod<'composeTransacti
         ]);
 
         const coinInfo = getBitcoinNetwork(payload.coin);
+        console.log('coinInfo', coinInfo);
         if (!coinInfo) {
             throw ERRORS.TypedError('Method_UnknownCoin');
         }
@@ -77,12 +80,16 @@ export default class ComposeTransaction extends AbstractMethod<'composeTransacti
         const outputs: ComposeOutput[] = [];
         let total = new BigNumber(0);
         payload.outputs.forEach(out => {
+            console.log('validating output');
+            console.log('out', out);
             const output = validateHDOutput(out, coinInfo);
+            console.log('output', output);
             if ('amount' in output && typeof output.amount === 'string') {
                 total = total.plus(output.amount);
             }
             outputs.push(output);
         });
+        console.log('outputs after validating all of them', outputs);
 
         const sendMax = outputs.find(o => o.type === 'send-max') !== undefined;
 
@@ -125,6 +132,9 @@ export default class ComposeTransaction extends AbstractMethod<'composeTransacti
         feeLevels: PrecomposeParams['feeLevels'],
     ): Promise<PrecomposedTransaction[]> {
         const { coinInfo, outputs, baseFee, skipPermutation } = this.params;
+        console.log('ComposeTransaction connect precompose !!!!');
+        console.log('this.params', this.params);
+
         const address_n = pathUtils.validatePath(account.path);
         const composer = new TransactionComposer({
             account: {
@@ -154,6 +164,7 @@ export default class ComposeTransaction extends AbstractMethod<'composeTransacti
                 );
                 const { sorted, permutation } = tx.transaction.outputs;
                 const txOutputs = sorted.map(out => outputToTrezor(out, coinInfo));
+                console.log('txOutputs after outputToTrezor', txOutputs);
 
                 return {
                     type: 'final',
@@ -174,6 +185,7 @@ export default class ComposeTransaction extends AbstractMethod<'composeTransacti
     }
 
     async run(): Promise<SignedTransaction | PrecomposedTransaction[]> {
+        console.log('ComposeTransaction connect run !!!!');
         if (this.params.account && this.params.feeLevels) {
             return this.precompose(this.params.account, this.params.feeLevels);
         }
@@ -199,6 +211,7 @@ export default class ComposeTransaction extends AbstractMethod<'composeTransacti
     }
 
     async selectAccount() {
+        console.log('ComposeTransaction connect selectAccount !!!!');
         const { coinInfo } = this.params;
         const blockchain = await initBlockchain(coinInfo, this.postMessage);
         const dfd = this.createUiPromise(UI.RECEIVE_ACCOUNT);

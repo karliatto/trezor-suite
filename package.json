@@ -28,6 +28,7 @@
         "suite:dev:ios": "yarn workspace @trezor/suite-native dev:ios",
         "suite:dev:android": "yarn workspace @trezor/suite-native dev:android",
         "suite:dev:desktop": "yarn workspace @trezor/suite-desktop dev",
+        "suite:dev:connect": "CONNECT_SRC=https://localhost:8088/ && yarn suite:dev",
         "_______ Testing _______": "Testing, linting, type checking...",
         "type-check": "yarn lerna run type-check",
         "type-check:force": "rimraf -rf **/libDev && yarn type-check",

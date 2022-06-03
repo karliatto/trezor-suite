@@ -75,6 +75,8 @@ export default class SignTransaction extends AbstractMethod<'signTransaction', P
         const outputs = validateTrezorOutputs(payload.outputs, coinInfo);
         const refTxs = validateReferencedTransactions(payload.refTxs, inputs, outputs);
 
+        // TODO(karliatto): what is the situation when outputs withoug amount?
+        // it is only used for popup,
         const outputsWithAmount = outputs.filter(
             output =>
                 typeof output.amount === 'string' &&

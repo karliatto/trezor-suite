@@ -130,6 +130,8 @@ export const outputToTrezor = (
     output: ComposedTxOutput,
     _coinInfo: BitcoinNetworkInfo,
 ): PROTO.TxOutputType => {
+    console.log('outputToTrezor');
+    console.log('output', output);
     if (output.opReturnData) {
         if (output.value) {
             throw ERRORS.TypedError(
