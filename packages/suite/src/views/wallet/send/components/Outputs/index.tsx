@@ -8,7 +8,7 @@ import { requestSubmarineSwap, getInvoiceDetails } from '@trezor/lightning';
 
 import { useSelector } from '@suite-hooks';
 
-import Address from './components/Address';
+import { Address } from './components/Address';
 import Amount from './components/Amount';
 import OpReturn from './components/OpReturn';
 import { ANIMATION } from '@suite-config';
@@ -94,8 +94,11 @@ const Outputs = ({ disableAnim }: OutputsProps) => {
     };
 
     const getLnSwap = async () => {
-        const swapInfoRes = await getInvoiceDetails(bolt11PayRequest.paymentRequest);
-        setSwapInfo(swapInfoRes);
+        // TODO(karliatto): check bolt11PayRequest
+        if (bolt11PayRequest && bolt11PayRequest.paymentRequest) {
+            const swapInfoRes = await getInvoiceDetails(bolt11PayRequest.paymentRequest);
+            setSwapInfo(swapInfoRes);
+        }
     };
 
     const createSubmarineSwap = async (account: Account | undefined, invoice: string) => {
@@ -122,6 +125,7 @@ const Outputs = ({ disableAnim }: OutputsProps) => {
 
     const animation = outputs.length > 1 && !disableAnim ? ANIMATION.EXPAND : {}; // do not animate if there is only 1 output, prevents animation on clear
 
+    console.log('outputs', outputs);
     return (
         <AnimatePresence initial={false}>
             <Wrapper>

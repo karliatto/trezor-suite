@@ -119,7 +119,13 @@ export const init = () => async (dispatch: Dispatch, getState: GetState) => {
     dispatch(cardanoPatch());
 
     try {
-        const connectSrc = resolveStaticPath('connect/');
+        let connectSrc = resolveStaticPath('connect/');
+        console.log('process.env.CONNECT_SRC', process.env.CONNECT_SRC);
+        if (process.env.CONNECT_SRC) {
+            connectSrc = process.env.CONNECT_SRC;
+        }
+        connectSrc = 'https://localhost:8088/';
+        console.log('connectSrc', connectSrc);
         // 'https://localhost:8088/';
         // 'https://connect.corp.sldev.cz/develop/';
 

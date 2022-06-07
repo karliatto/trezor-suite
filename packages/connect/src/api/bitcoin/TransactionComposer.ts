@@ -38,6 +38,8 @@ export class TransactionComposer {
     composed: { [key: string]: ComposeResult } = {};
 
     constructor(options: Options) {
+        console.log('TransactionComposer in connect !!!!!!!!!!!!!!!');
+        console.log('options', options);
         this.account = options.account;
         this.outputs = options.outputs;
         this.coinInfo = options.coinInfo;
@@ -77,6 +79,7 @@ export class TransactionComposer {
     async init(blockchain: Blockchain) {
         const { blockHeight } = await blockchain.getNetworkInfo();
         this.blockHeight = blockHeight;
+        console.log('TransactionComposer in connect init');
 
         await this.feeLevels.load(blockchain);
     }

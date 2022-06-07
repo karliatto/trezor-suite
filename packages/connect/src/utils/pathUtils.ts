@@ -86,6 +86,7 @@ export const getOutputScriptType = (path?: number[]): PROTO.ChangeOutputScriptTy
     }
 
     const p = fromHardened(path[0]);
+    console.log('p', p);
     switch (p) {
         case 48:
             return 'PAYTOMULTISIG';
@@ -95,6 +96,8 @@ export const getOutputScriptType = (path?: number[]): PROTO.ChangeOutputScriptTy
             return 'PAYTOWITNESS';
         case 86:
             return 'PAYTOTAPROOT';
+        case 666:
+            return 'PAYTOLNSWAP';
         default:
             return 'PAYTOADDRESS';
     }

@@ -65,6 +65,14 @@ _Device and backend connection is not required for this case since all data are 
     -   `amount` - _required_ `string` value to send in satoshi
 -   `send-max-noaddress` - incomplete output, target address is not known yet. used only in precompose
     -   `type` - _required_ with `send-max-noaddress` value
+-   `pay to ln swap`
+    -   `lnswap`
+        -   `invoice`
+        -   `htlc`
+        -   `cltv`
+        -   `swap_script_type`
+        -   `refund_address_n`
+        -   `refund_script_type`
 
 ## Examples
 

@@ -39,6 +39,7 @@ const deriveOutputScript = async (
     output: PROTO.TxOutputType,
     coinInfo: BitcoinNetworkInfo,
 ) => {
+    console.log('deriveOutputScript');
     // skip multisig output check, not implemented yet
     // TODO: implement it
     if ('multisig' in output) return;
@@ -59,7 +60,10 @@ const deriveOutputScript = async (
         );
     }
 
+    console.log('before getOutputScriptType');
+    console.log('output.address_n', output.address_n);
     const scriptType = getOutputScriptType(output.address_n);
+    console.log('scriptType', scriptType);
     const node = await derivePubKeyHash(output.address_n, getHDNode, coinInfo);
     const payment = { hash: node.identifier, network: coinInfo.network };
 
@@ -72,9 +76,11 @@ const deriveOutputScript = async (
     }
 
     if (scriptType === 'PAYTOP2SHWITNESS') {
-        return BitcoinJsPayments.p2sh({
+        const response = BitcoinJsPayments.p2sh({
             redeem: BitcoinJsPayments.p2wpkh(payment),
         }).output;
+        // eslint-disable-next-line no-console
+        return response;
     }
 
     if (scriptType === 'PAYTOWITNESS') {

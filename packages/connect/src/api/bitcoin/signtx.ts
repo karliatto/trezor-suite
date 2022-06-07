@@ -177,12 +177,14 @@ const requestSignedTxInfo = ({
 
 // requests information about a transaction
 // can be either signed transaction itself of prev transaction
-const requestTxAck = (props: SignTxHelperProps) => {
+const requestTxAck = async (props: SignTxHelperProps) => {
     const { tx_hash } = props.txRequest.details;
+    // TODO(karliatto): if it has tx_has it means the request from trezor is about previous tx
     if (tx_hash) {
         return requestPrevTxInfo(props);
     }
-    return requestSignedTxInfo(props);
+    const responseRequestSignedTxInfo = await requestSignedTxInfo(props);
+    return responseRequestSignedTxInfo;
 };
 
 const saveTxSignatures = (
@@ -208,6 +210,8 @@ const saveTxSignatures = (
 const processTxRequest = async (props: SignTxHelperProps): Promise<SignedTransaction> => {
     const { txRequest, serializedTx, signatures } = props;
     if (txRequest.serialized) saveTxSignatures(txRequest.serialized, serializedTx, signatures);
+    // TODO(karliatto): is this request_tyep, what is the reason of this????
+    // TXFINISHED is from the device and all request_types
     if (txRequest.request_type === 'TXFINISHED') {
         return Promise.resolve({
             signatures,
@@ -231,6 +235,8 @@ export const signTx = async ({
     options,
     coinInfo,
 }: SignTxHelperParams) => {
+    // TODO(karliatto): this is the first msg to trezor device
+    // typedCall sends a message and it expects the second argument as response from device
     const { message } = await typedCall('SignTx', 'TxRequest', {
         ...options,
         inputs_count: inputs.length,
