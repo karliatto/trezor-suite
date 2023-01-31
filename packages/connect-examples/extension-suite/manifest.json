@@ -1,0 +1,20 @@
+{
+    "manifest_version": 3,
+    "name": "Trezor Suite",
+    "version": "1.0",
+    "action": {
+        "default_popup": "popup.html"
+    },
+    "background": {
+        "service_worker": "serviceWorker.js"
+    },
+    "content_scripts": [
+        {
+            "matches": ["file:///home/*"],
+            "all_frames": true,
+            "js": ["content-script.js"]
+        }
+    ],
+    "host_permissions": ["https://github.com/*"],
+    "permissions": ["scripting", "activeTab"]
+}
