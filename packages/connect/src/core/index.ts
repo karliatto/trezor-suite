@@ -30,7 +30,7 @@ import { getMethod } from './method';
 
 import { create as createDeferred, Deferred } from '../utils/deferred';
 import { resolveAfter } from '../utils/promiseUtils';
-import { initLog, enableLog } from '../utils/debug';
+import { initLog, enableLog, setLogWriter } from '../utils/debug';
 import { dispose as disposeBackend } from '../backend/BlockchainLink';
 import { InteractionTimeout } from '../utils/interactionTimeout';
 
@@ -1014,7 +1014,10 @@ export class Core extends EventEmitter {
  * @returns {Promise<Core>}
  * @memberof Core
  */
-export const initCore = async (settings: ConnectSettings) => {
+export const initCore = async (settings: ConnectSettings, logWriter?: any) => {
+    if (logWriter) {
+        setLogWriter(logWriter);
+    }
     try {
         await DataManager.load(settings);
         enableLog(DataManager.getSettings('debug'));
