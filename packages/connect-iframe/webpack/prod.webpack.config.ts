@@ -45,6 +45,24 @@ const config: webpack.Configuration = {
                 },
             },
             {
+                test: /sharedLoggerWorker.ts/i,
+                use: [
+                    {
+                        loader: 'worker-loader',
+                        options: {
+                            worker: 'SharedWorker',
+                            filename: './workers/shared-logger-worker.js',
+                        },
+                    },
+                    {
+                        loader: 'babel-loader',
+                        options: {
+                            presets: ['@babel/preset-typescript'],
+                        },
+                    },
+                ],
+            },
+            {
                 test: /\workers\/blockbook\/index/i,
                 loader: 'worker-loader',
                 options: {
