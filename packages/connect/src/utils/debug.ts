@@ -32,7 +32,7 @@ class Log {
     enabled: boolean;
     css: string;
     messages: LogMessage[];
-    logWriter: any;
+    logWriter: LogWriter | undefined;
 
     constructor(prefix: string, enabled: boolean, logWriter?: LogWriter) {
         this.prefix = prefix;
@@ -107,18 +107,18 @@ class Log {
 }
 
 const _logs: { [k: string]: Log } = {};
-let writer: any;
+let writer: LogWriter | undefined;
 
 export const initLog = (prefix: string, enabled?: boolean, logWriter?: LogWriter) => {
-    const finalWriter = logWriter || writer;
-    const instance = new Log(prefix, !!enabled, finalWriter);
+    const instanceWriter = logWriter || writer;
+    const instance = new Log(prefix, !!enabled, instanceWriter);
     _logs[prefix] = instance;
     return instance;
 };
 
-export const setLogWriter = (logWriter: any) => {
+export const setLogWriter = (logWriterFactory: () => LogWriter) => {
     Object.keys(_logs).forEach(key => {
-        writer = logWriter();
+        writer = logWriterFactory();
         _logs[key].setWriter(writer);
     });
 };
