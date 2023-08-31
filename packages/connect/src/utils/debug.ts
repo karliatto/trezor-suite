@@ -1,17 +1,26 @@
 // origin: https://github.com/trezor/connect/blob/develop/src/js/utils/debug.js
 /* eslint-disable no-console */
 
+const green = '#bada55';
+const blue = '#20abd8';
+const orange = '#f4a744';
+const yellow = '#fbd948';
+
 const colors: Record<string, string> = {
+    // blue, npm package related
+    '@trezor/connect': `color: ${blue}; background: #000;`,
+    '@trezor/connect-web': `color: ${blue}; background: #000;`,
     // orange, api related
-    '@trezor/connect': 'color: #f4a742; background: #000;',
-    IFrame: 'color: #f4a742; background: #000;',
-    Core: 'color: #f4a742; background: #000;',
+    IFrame: `color: ${orange}; background: #000;`,
+    Core: `color: ${orange}; background: #000;`,
     // green, device related
-    DescriptorStream: 'color: #77ab59; background: #000;',
-    DeviceList: 'color: #77ab59; background: #000;',
-    Device: 'color: #bada55; background: #000;',
-    DeviceCommands: 'color: #bada55; background: #000;',
-    '@trezor/transport': 'color: #bada55; background: #000;',
+    DeviceList: `color: ${green}; background: #000;`,
+    Device: `color: ${green}; background: #000;`,
+    DeviceCommands: `color: ${green}; background: #000;`,
+    '@trezor/transport': `color: ${green}; background: #000;`,
+    InteractionTimeout: `color: ${green}; background: #000;`,
+    // yellow, ui related
+    '@trezor/connect-popup': `color: ${yellow}; background: #000;`,
 };
 
 export type LogMessage = {
@@ -48,6 +57,7 @@ class Log {
         const message = {
             level,
             prefix,
+            css: this.css,
             message: args,
             timestamp: Date.now(),
         };
@@ -76,21 +86,21 @@ class Log {
     log(...args: any[]) {
         this.addMessage('log', this.prefix, ...args);
         if (this.enabled) {
-            console.log(this.prefix, ...args);
+            console.log(`%c${this.prefix}`, this.css, ...args);
         }
     }
 
     error(...args: any[]) {
         this.addMessage('error', this.prefix, ...args);
         if (this.enabled) {
-            console.error(this.prefix, ...args);
+            console.error(`%c${this.prefix}`, this.css, ...args);
         }
     }
 
     warn(...args: any[]) {
         this.addMessage('warn', this.prefix, ...args);
         if (this.enabled) {
-            console.warn(this.prefix, ...args);
+            console.warn(`%c${this.prefix}`, this.css, ...args);
         }
     }
 
@@ -100,7 +110,7 @@ class Log {
             if (this.css) {
                 console.log(`%c${this.prefix}`, this.css, ...args);
             } else {
-                console.log(this.prefix, ...args);
+                console.log(`%c${this.prefix}`, this.css, ...args);
             }
         }
     }
@@ -142,4 +152,15 @@ export const getLog = () => {
     });
     logs.sort((a, b) => a.timestamp - b.timestamp);
     return logs;
+};
+
+export const initSharedLogger = (connectSrc: string) => {
+    const workerUrl = `${connectSrc}workers/shared-logger-worker.js`;
+    const worker = new SharedWorker(workerUrl);
+    worker.port.start();
+    const logWriterFactory = (): LogWriter => ({
+        add: (message: LogMessage) =>
+            worker.port.postMessage({ type: 'add-log', data: JSON.parse(JSON.stringify(message)) }),
+    });
+    setLogWriter(logWriterFactory);
 };
